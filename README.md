@@ -22,11 +22,42 @@ And the grammar is:
 #Id
 FEN
 
-from [Id] by [move]
-to [Id] by [move]
+from #Id
+move) #Id
 draw by ["dead position" | "stalemate" | "threefold repetition" | "fifty moves"]
-checkmate
+checkmate!
 comment [any]
+```
+
+move grammar:
+```js
+0. Empty! (this means only one is possible)
+1. [row]
+1. [column]
+1. [piece]
+2. [toSquare]
+3. [piece][toSquare]
+3. [fromFile][toSquare]
+3. [fromRank][toSquare]
+3. [toSquare][promotionPiece]
+4. [fromFile][toSquare][promotionPiece]
+4. [fromSquare][toSquare]
+
+// Pieces are capitalized, squares are not
+// The minimum length disambiguation possible is always used
+// The list above is ordered by how many characters it uses
+
+// h-pawn takes on g8, promoting to a bishop, checkmate
+ // If this move was forced that would be amazing
+g
+8
+P
+g8
+Pg8 // Honestly this is just as good as hg8
+hg8
+7g8 // Silly - first representation that won't ever happen
+hg8B
+h7g8 // Note: In this case it doesn't disambiguate enough. So use [fromFile][toSquare][promotionPiece] instead
 ```
 
 Files are organized from top node to bottom node. (Really an upside-down tree)  
