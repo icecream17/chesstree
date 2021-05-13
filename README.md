@@ -12,14 +12,14 @@ Each board state has:
 3. Castling
 4. En passant, but only if the opponent can do En passant next move.
 
-The previous board states are needed to check for repetition
-
-We don't actually need the side to move, we can extrapolate that from what layer the node is.
-But it's there because it's easier.
-Also, I could shorten the board position even more by some bit representation. Maybe later
+The previous board states are needed to check for repetition, which the file structure tree naturally fits.
 
 ## grammar
-Here, the FEN is really a board state. So the move count is excluded, en passant (See above), etc.
+Here, the FEN is really a board state.
+So the move count is excluded, en passant only exists if it's possible, etc.
+
+Technically, with the "from" lines, the FEN is redundant, since you have the list of moves already.
+Maybe I should remove them
 
 And the grammar is:
 ```js
@@ -69,6 +69,7 @@ hg8B
 h7g8 // Note: In this case it doesn't disambiguate enough. So use [fromFile][toSquare][promotionPiece] instead
 ```
 
+## file structure
 Files are organized from top node to bottom node. (Really an upside-down tree)  
 The top node is the starting position.
 
