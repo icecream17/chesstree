@@ -33,7 +33,6 @@ checkmate!
 comment [any]
 ```
 
-
 move grammar:
 ```js
 0. Empty! (this means only one is possible)
@@ -68,6 +67,15 @@ hg8
 g8B
 hg8B
 h7g8 // Note: In this case it doesn't disambiguate enough. So use [fromFile][toSquare][promotionPiece] instead
+
+// Also, there's information for theoretically perfect play:
+move) #xxxx // Unknown result
+move= #xxxx // draw
+move+ #xxxx // win
+move- #xxxx // loss
+
+// "+" might be confusing, since that's the symbol for check.
+// If there's a better suggestion, feel free to suggest it.
 ```
 
 ## file structure
