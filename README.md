@@ -33,6 +33,7 @@ checkmate!
 comment [any]
 ```
 
+
 move grammar:
 ```js
 0. Empty! (this means only one is possible)
@@ -79,3 +80,12 @@ This way, you don't have to worry about folder limits.
 
 The moves are ordered by (8-1), (a-h), (piece from, piece to, alphabetical promotion)  
 The first instance of a node stays. Duplicate nodes shouldn't exist
+
+## wait a minute
+_"Isn't this impossible?"_ Yes
+
+Note: Maybe in a billion trillion years it would be possible, since  
+`Number of states of atom in the universe > total chess positions > number of atoms in the universe`
+
+If this project gets over 1 GB, part 2 will be on a different repo. To be determined.  
+But `1 GB = 1 000 000 000 bytes = 1 billion characters`, (text is very efficient), so I don't expect to reach that point soon.
