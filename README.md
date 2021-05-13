@@ -39,7 +39,7 @@ move grammar:
 1. [row]
 1. [column]
 1. [piece]
-2. [toSquare]
+2. [toSquare] // a: Only pawn, or b: Only piece
 2. [piece][toFile]
 2. [piece][toRank]
 3. [piece][toSquare]
@@ -59,9 +59,12 @@ g
 8
 P
 g8
+Pg
+P8
 Pg8 // Honestly this is just as good as hg8
 hg8
 7g8 // Silly - first representation that won't ever happen
+g8B
 hg8B
 h7g8 // Note: In this case it doesn't disambiguate enough. So use [fromFile][toSquare][promotionPiece] instead
 ```
