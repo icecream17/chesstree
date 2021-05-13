@@ -36,5 +36,5 @@ Each node is represented by a folder.
 Each folder has "info.txt" and then child nodes/folders.  
 This way, you don't have to worry about folder limits.
 
-The moves are ordered by (a1-h8), (piece from, piece to, alphabetical promotion)  
+The moves are ordered by (8-1), (a-h), (piece from, piece to, alphabetical promotion)  
 The first instance of a node stays. Duplicate nodes shouldn't exist
