@@ -14,6 +14,10 @@ Each board state has:
 
 The previous board states are needed to check for repetition
 
+We don't actually need the side to move, we can extrapolate that from what layer the node is.
+But it's there because it's easier.
+Also, I could shorten the board position even more by some bit representation. Maybe later
+
 ## grammar
 Here, the FEN is really a board state. So the move count is excluded, en passant (See above), etc.
 
