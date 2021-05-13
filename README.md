@@ -27,56 +27,100 @@ And the grammar is:
 FEN
 
 from #Id
-move) #Id
-draw by ["dead position" | "stalemate" | "threefold repetition" | "fifty moves"]
+/move/tablebase/ #Id
+draw by /draw reason/
 checkmate!
-comment [any]
+comment [any text]
 ```
 
-move grammar:
+`/draw reason/`:
+```
+dead position
+insufficient material
+stalemate
+threefold repetition
+fifty moves
+```
+
+`/move/` grammar:
 ```js
-0. Empty! (this means only one is possible)
-1. [row]
-1. [column]
-1. [piece]
-2. [toSquare] // a: Only pawn, or b: Only piece
-2. [piece][toFile]
-2. [piece][toRank]
-3. [piece][toSquare]
-3. [fromFile][toSquare]
-3. [fromRank][toSquare]
-3. [toSquare][promotionPiece]
-4. [fromFile][toSquare][promotionPiece]
-4. [fromSquare][toSquare]
+// Here, all of the fields surrounded by [square brackets like this] are optional
+// Try to ***use the least amount of fields possible**!!!
+move =
+   [piece] [captureInfo] [fromToInfo] [promotionIndicator] [checkIndicator] [checkmateIndicator]
+   [piece] [captureInfo] [fromToInfo] [promotionPiece] [checkIndicator] [checkmateIndicator]
 
-// Pieces are capitalized, squares are not
-// The minimum length disambiguation possible is always used
-// The list above is ordered by how many characters it uses
+captureInfo =
+   captureIndicator [piece]
 
-// h-pawn takes on g8, promoting to a bishop, checkmate
- // If this move was forced that would be amazing
-g
-8
+captureIndicator = "x"
+promotionIndicator = "="
+checkIndicator = "+"
+checkmateIndicator = "#"
+
+// You cannot have "fromRank" without "toRank" (so cc is possible, but not c1 or c by itself)
+// You cannot have "fromFile" without "toFile" or "toRank" (so 1c and 12 are possible, but not 1 by itself)
+fromToInfo =
+   [fromRank] [fromFile] toRank [toFile]
+   [fromFile] toFile
+
+piece =
+   PBNRQK
+file =
+   abcdefgh
+rank =
+   12345678
+
+// Example:
+// Consider (exc1=Q#). How is it represented in this optimized format?
+
+// If the move is forced, the best representation is the empty string (!!!!)
+// Else:
+//  If there's only 1 pawn move
 P
-g8
-Pg
-P8
-Pg8 // Honestly this is just as good as hg8
-hg8
-7g8 // Silly - first representation that won't ever happen
-g8B
-hg8B
-h7g8 // Note: In this case it doesn't disambiguate enough. So use [fromFile][toSquare][promotionPiece] instead
+//  If there's only 1 move that captures
+x
+//  If there's only 1 move that goes to rank 1
+1
+// .....
+//  If there's only 1 move that checks (redundant in this case)
++
+//  If there's only 1 move that checkmates
+#
+//  If there's only 1 pawn move that captures
+Px
+// .....
+// You get the idea. 
 
-// Also, there's information for theoretically perfect play:
-move) #xxxx // Unknown result
-move= #xxxx // draw
-move+ #xxxx // win
-move- #xxxx // loss
 
-// "+" might be confusing, since that's the symbol for check.
-// If there's a better suggestion, feel free to suggest it.
+// Note that the longest representation is 4 characters
+// Let's say there's queens at c3, c5 and e3
+// Qc3e5
+//   cannot beomce c3e since Qc3e1,
+//   and not c35 since Qc1e5,
+//   and not 3e5 or Q35, since Qe3e5,
+//   and not ce5 or Qe5, since Qc5e5,
+//   c3e5 is the minimum
+
+// Longest promotion is 3 characters
+fromFile toFile promotionPiece (e.g. with efB, disambiguates exf8=B from gxf8=B, exd8=B, exf8=N)
 ```
+
+`/tablebase/`
+```js
+// Information about theoretically perfect play:
+) // Unknown
+= // Draw
+|w // white wins
+|b // black wins
+
+// Examples:
+Qxf7)
+Qxf7=
+Qxf7|w
+Qxf7|b
+```
+
 
 ## file structure
 Files are organized from top node to bottom node. (Really an upside-down tree)  
