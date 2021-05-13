@@ -40,6 +40,8 @@ move grammar:
 1. [column]
 1. [piece]
 2. [toSquare]
+2. [piece][toFile]
+2. [piece][toRank]
 3. [piece][toSquare]
 3. [fromFile][toSquare]
 3. [fromRank][toSquare]
