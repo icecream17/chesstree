@@ -111,8 +111,8 @@ fromFile toFile promotionPiece (e.g. with efB, disambiguates exf8=B from gxf8=B,
 // Information about theoretically perfect play:
 ) // Unknown
 = // Draw
-|w // white wins
-|b // black wins
+> // side to move wins
+< // side to move loses
 
 // Examples:
 Qxf7)
