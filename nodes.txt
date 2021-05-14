@@ -1,4 +1,11 @@
+// Note: Duplicate nodes don't count
+// For example, Na3 Nc6 Nb5 === Nc3 Nc6 Nb5
+// So although Perft results for depth 3 get 8902, the number here is smaller
+
+Total nodes: 1220
+Total nodes completed: 3
+
 depth 0: 1           // [#0]
 depth 1: 20          // [#1 to #20]
 depth 2: 400         // [#21 to #420]
-depth 3:             // [#421 to ]
+depth 3: [800+]      // [#421 to ]
