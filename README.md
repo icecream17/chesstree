@@ -29,7 +29,7 @@ FEN
 from #Id
 /move/tablebase/ #Id
 draw by /draw reason/
-checkmate!
+[w/b] wins!
 comment [any text]
 ```
 
