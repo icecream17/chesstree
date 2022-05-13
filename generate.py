@@ -162,7 +162,12 @@ def store_cache():
         pickle.dump((currentlayer, nextlayer, nextID, boardata), f)
 
 
-if __name__ == "__main__":
+def main():
     load_cache()
-    make_next_node()
+    for _ in range(77):
+        make_next_node()
     store_cache()
+
+
+if __name__ == "__main__":
+    main()
