@@ -1,25 +1,8 @@
+None
+None
 #0
-rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0
+1..20
+????????????????????
 
-comment The starting position
-a4) #1
-a3) #2
-b4) #3
-b3) #4
-c4) #5
-c3) #6
-d4) #7
-d3) #8
-e4) #9
-e3) #10
-f4) #11
-f3) #12
-g4) #13
-g3) #14
-h4) #15
-h3) #16
-comment The following move is Na3
-Na) #17
-Nc) #18
-Nf) #19
-Nh) #20
+
+rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
