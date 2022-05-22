@@ -3,12 +3,12 @@
 // So although Perft results for depth 3 get 8902, the number here is smaller
 // There is more potential with symmetry...
 
-Total nodes: 80672
-Total parents: 5883
+Total nodes: 91030
+Total parents: 6575
 Total solved: 0
 
 depth 0: 1           // [#0]
 depth 1: 20          // [#1 to #20]
 depth 2: 400         // [#21 to #420]
 depth 3: 5462        // [#421 to #5882]
-depth 4: 74771       // [#5883 to #80653]
+depth 4: 85148+      // [#5883 to #91030+]

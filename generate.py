@@ -71,7 +71,7 @@ def make_node_and_update(board: chess.Board, root: int, nextID: int, path: str, 
                 with open(os.path.join(path, str(root), str(index))) as f:
                     moveresults += f.readline()
                     mr = f.readline()
-                    if mr != "None":
+                    if mr != "?":
                         reasons.add(mr)
             except OSError:
                 moveresults += "?"
@@ -95,6 +95,10 @@ def make_node_and_update(board: chess.Board, root: int, nextID: int, path: str, 
             result = "d"
             reason = "stalemate"
 
+    if result == None:
+        result = "?"
+    if reason == None:
+        reason = "?"
     txt = f"{result}\n{reason}\n#{root}\n{nextID}..{index - 1}\n{moveresults}\n{equivs}\n\n{board.fen()}\n"
 
     try:
@@ -102,7 +106,13 @@ def make_node_and_update(board: chess.Board, root: int, nextID: int, path: str, 
     except FileExistsError:
         pass
     with open(os.path.join(path, str(root), "info"), "w+") as f:
-        f.write(txt)
+        # It's possible that not all bytes are written
+        loops = 0
+        while txt:
+            txt = txt[f.write(txt):]
+            loops += 1
+            if loops > 10000:
+                raise Exception("Could not write all info!", root, txt)
     return index
 
 
@@ -150,7 +160,7 @@ def load_cache():
         with open('cache.pickle', 'rb') as f:
             currentlayer, nextlayer, nextID, boardata = pickle.load(f)
     except FileNotFoundError:
-        pass
+        print("No cache found, starting from scratch")
 
 def store_cache():
     import pickle

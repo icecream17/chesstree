@@ -24,7 +24,7 @@ Maybe I should remove them
 And the grammar is:
 ```rust
 /tablebase
-zero or one /draw reason
+/draw reason
 #Id
 Id..Id
 zero or more /tablebase
@@ -39,6 +39,7 @@ insufficient material
 stalemate
 threefold repetition
 fifty moves
+?
 ```
 
 `/tablebase`:
