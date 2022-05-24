@@ -35,6 +35,10 @@ jobs:
       run: |
         python generate.py
 
+    - name: Verify
+      run: |
+        python verify.py
+
     - name: Commit files
       run: |
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"

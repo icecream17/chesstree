@@ -27,8 +27,9 @@ And the grammar is:
 /draw reason
 #Id
 Id..Id
-zero or more /tablebase
-zero or more /equivalent
+zero or more /tablebase not separated by newlines
+zero or more /equivalent separated by newlines
+FEN
 ```
 
 `/draw reason`:

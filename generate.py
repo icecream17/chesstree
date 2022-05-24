@@ -99,7 +99,9 @@ def make_node_and_update(board: chess.Board, root: int, nextID: int, path: str, 
         result = "?"
     if reason == None:
         reason = "?"
-    txt = f"{result}\n{reason}\n#{root}\n{nextID}..{index - 1}\n{moveresults}\n{equivs}\n\n{board.fen()}\n"
+
+    # When adding to `equivs`, there's always a newline at the start
+    txt = f"{result}\n{reason}\n#{root}\n{nextID}..{index - 1}\n{moveresults}{equivs}\n{board.fen()}\n"
 
     try:
         os.makedirs(os.path.join(path, str(root)))
@@ -113,6 +115,8 @@ def make_node_and_update(board: chess.Board, root: int, nextID: int, path: str, 
             loops += 1
             if loops > 10000:
                 raise Exception("Could not write all info!", root, txt)
+        f.flush()
+        os.fsync(f.fileno())
     return index
 
 
@@ -174,7 +178,7 @@ def store_cache():
 
 def main():
     load_cache()
-    for _ in range(77):
+    for _ in range(7000):
         make_next_node()
     store_cache()
 
