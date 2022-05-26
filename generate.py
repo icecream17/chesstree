@@ -229,7 +229,7 @@ def store_cache():
 
 def main():
     load_cache()
-    for _ in range(14077):
+    for _ in range(77):
         make_next_node()
     store_cache()
 
