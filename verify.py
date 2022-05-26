@@ -109,6 +109,7 @@ def check():
     global current_node
     global folders_to_check
     global new_node_count
+    hole = []
     while folders_to_check:
         new_node_count = 0
         folder = folders_to_check.pop(0)
@@ -124,9 +125,10 @@ def check():
                 check_fourth(folder, _filename, f.readline()[:-1])
                 check_fifth(_filename, f.readline()[:-1])
                 check_rest(_filename, [line[:-1] for line in f.readlines()])
+            if hole:
+                print(f"Missing: {hole}")
         except FileNotFoundError:
-            print(f"Missing: {current_node} {_filename}")
-            pass
+            hole.append(current_node)
 
         current_node += 1
 

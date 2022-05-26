@@ -1,7 +1,7 @@
-import chess
 import os
 from typing import List, Tuple
 
+import chess
 
 currentlayer = [("./", (), 0)]
 nextlayer = []
@@ -12,13 +12,36 @@ def move_to_tuple(move: chess.Move):
     return (move.from_square, move.to_square, move.promotion)
 
 
+# Returns a sorted tuple of moves since the last irrevers8ble move
+# and the number of positions that add to the 100 ply counter but aren't actually reachable
+def _equiv_movedata(board: chess.Board):
+    move_stack = []
+    irreversible_non_zeroing = 0
+    board2 = chess.Board()
+    for move in board.move_stack:
+        if board2.is_zeroing(move):
+            move_stack = []
+            irreversible_non_zeroing = 0
+        elif board2.is_irreversible(move):
+            irreversible_non_zeroing += 1 + len(move_stack)
+            move_stack = []
+        else:
+            move_stack.append(move)
+        board2.push(move)
+
+    move_stack = tuple(sorted(board.move_stack, key=move_to_tuple))
+    return (move_stack, irreversible_non_zeroing)
+
+
+
 # Returns only the necessary data needed to see if two positions are equivalent
 def to_equiv(board: chess.Board):
+    move_stack, irreversible_non_zeroing = _equiv_movedata(board)
     return (
         board.pawns, board.knights, board.bishops, board.rooks, board.queens, board.kings,
-        tuple(sorted(board.move_stack, key=move_to_tuple)),
         board.castling_rights,
-        None if not board.has_legal_en_passant() else board.ep_square)
+        None if not board.has_legal_en_passant() else board.ep_square,
+        move_stack, irreversible_non_zeroing)
 
 
 def sorted_legal_moves(board: chess.Board) -> List[chess.Move]:
@@ -206,7 +229,7 @@ def store_cache():
 
 def main():
     load_cache()
-    for _ in range(1400):
+    for _ in range(1477):
         make_next_node()
     store_cache()
 
