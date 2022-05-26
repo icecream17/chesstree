@@ -1,6 +1,6 @@
 import chess
 import os
-from typing import List
+from typing import List, Tuple
 
 
 currentlayer = [("./", (), 0)]
@@ -26,9 +26,14 @@ def sorted_legal_moves(board: chess.Board) -> List[chess.Move]:
 
 
 # This function is getting too big
-def make_node_and_update(board: chess.Board, root: int, nextID: int, path: str, stack: tuple[chess.Move]):
+def make_node_and_update(root: int, nextID: int, path: str, stack: Tuple[chess.Move, ...]):
     global boardata
     global nextlayer
+
+    board = chess.Board()
+    for move in stack:
+        board.push(move)
+
     result = None
     reason = None
     moveresults = ""
@@ -40,43 +45,65 @@ def make_node_and_update(board: chess.Board, root: int, nextID: int, path: str, 
     for move in moves:
         board.push(move)
 
-        equiv = to_equiv(board)
-        if equiv in boardata:
-            equivs += f"\n{index}≡{boardata[equiv]}"
-            board.pop()
-            continue
-        else:
-            boardata[equiv] = index
-        stack2 = stack + (move,)
-        nextlayer.append((root_path, stack2, index))
+        # ignore
+        # actual_index = index (unused)
+        actual_path = os.path.join(root_path, str(index))
 
-        if board.is_variant_win():
-            moveresults += "w"
-        elif board.is_variant_draw():
-            moveresults += "d"
-            if board.is_fifty_moves():
-                reasons.add("fifty moves")
-            elif board.is_stalemate():
-                reasons.add("stalemate")
-            elif board.is_insufficient_material():
-                reasons.add("insufficient material")
-            elif board.is_repetition():
-                reasons.add("threefold repetition")
-            else:
-                reasons.add("variant draw")
-        elif board.is_variant_loss():
-            moveresults += "l"
+        # check if equivalent
+        equiv = to_equiv(board)
+        is_equiv = equiv in boardata
+        if is_equiv:
+            # actual data
+            actual_path, actual_index = boardata[equiv]
+
+            # update equivs
+            equivs += f"\n{index}≡{actual_index}"
+
+            # don't `continue` since move info collection
+            # is still necessary
         else:
+            boardata[equiv] = (actual_path, index)
+
+            # add to the next layer only if not equivalent
+            stack2 = stack + (move,)
+            nextlayer.append((root_path, stack2, index))
+
+        # add moveresults + reasons
+        outcome = board.outcome(claim_draw=True)
+
+        # Since this is regular chess,
+        # no need to check for is_variant_win() is_variant_draw() etc
+        if board.is_checkmate():
+            moveresults += "w"
+        elif board.is_fifty_moves():
+            moveresults += "d"
+            reasons.add("fifty moves")
+        elif board.is_stalemate():
+            moveresults += "d"
+            reasons.add("stalemate")
+        elif board.is_insufficient_material():
+            moveresults += "d"
+            reasons.add("insufficient material")
+        elif board.is_repetition():
+            moveresults += "d"
+            reasons.add("threefold repetition")
+        else:
+            # assert not board.is_game_over(), f"Game over?? {actual_path} {board.fen()}"
+
             try:
-                with open(os.path.join(path, str(root), str(index))) as f:
+                with open(actual_path) as f:
                     moveresults += f.readline()
                     mr = f.readline()
                     if mr != "?":
                         reasons.add(mr)
             except OSError:
                 moveresults += "?"
+
         board.pop()
-        index += 1
+
+        # Unsatisfying bug fix
+        if not is_equiv:
+            index += 1
 
     if "w" in moveresults:
         result = "w"
@@ -100,8 +127,14 @@ def make_node_and_update(board: chess.Board, root: int, nextID: int, path: str, 
     if reason == None:
         reason = "?"
 
+    range_ = ""
+    if index - 1 == nextID:
+        range_ = nextID
+    elif index - 1 > nextID:
+        range_ = f"{nextID}..{index - 1}"
+
     # When adding to `equivs`, there's always a newline at the start
-    txt = f"{result}\n{reason}\n#{root}\n{nextID}..{index - 1}\n{moveresults}{equivs}\n{board.fen()}\n"
+    txt = f"{result}\n{reason}\n#{root}\n{range_}\n{moveresults}{equivs}\n{board.fen()}\n"
 
     try:
         os.makedirs(os.path.join(path, str(root)))
@@ -120,14 +153,9 @@ def make_node_and_update(board: chess.Board, root: int, nextID: int, path: str, 
     return index
 
 
-def update_from_layer_item(path: str, stack: tuple[chess.Move], nodeID: int):
+def update_from_layer_item(path: str, stack: Tuple[chess.Move], nodeID: int):
     global nextID
-
-    board = chess.Board()
-    for move in stack:
-        board.push(move)
-
-    nextID = make_node_and_update(board, nodeID, nextID, path, stack)
+    nextID = make_node_and_update(nodeID, nextID, path, stack)
     print(nodeID, nextID)
 
 
@@ -178,7 +206,7 @@ def store_cache():
 
 def main():
     load_cache()
-    for _ in range(7000):
+    for _ in range(1400):
         make_next_node()
     store_cache()
 

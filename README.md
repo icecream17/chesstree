@@ -1,12 +1,16 @@
 # chesstree
+
 The tree of chess
 
 ## reading
+
 In order to completely describe a board position, you need to describe:
+
 1. Current board state + Half move
 2. Previous board states
 
 Each board state has:
+
 1. Board
 2. Side to move
 3. Castling
@@ -15,6 +19,7 @@ Each board state has:
 The previous board states are needed to check for repetition, which the file structure tree naturally fits.
 
 ## grammar
+
 Here, the FEN is really a board state.
 So the move count is excluded, en passant only exists if it's possible, etc.
 
@@ -22,17 +27,28 @@ Technically, with the "from" lines, the FEN is redundant, since you have the lis
 Maybe I should remove them
 
 And the grammar is:
+
 ```rust
 /tablebase
 /draw reason
 #Id
-Id..Id
+/range
 zero or more /tablebase not separated by newlines
 zero or more /equivalent separated by newlines
 FEN
 ```
 
-`/draw reason`:
+### `/tablebase`
+
+```js
+// Information about theoretically perfect play:
+? // Unknown
+= // Draw
+> // side to move wins
+< // side to move loses
+```
+
+### `/draw reason`
 
 ```txt
 dead position
@@ -43,20 +59,18 @@ fifty moves
 ?
 ```
 
-`/tablebase`:
-
-```js
-// Information about theoretically perfect play:
-? // Unknown
-= // Draw
-> // side to move wins
-< // side to move loses
-```
-
-`/equivalent`:
+### `/range`
 
 ```rust
-id≡id
+// Empty line
+Id // Single child
+Id..Id // Two or more children
+```
+
+### `/equivalent`
+
+```rust
+Id≡Id
 
 // Two nodes can have different move orders but otherwise be equivalent
 // The "only" information that matters for a position is:
