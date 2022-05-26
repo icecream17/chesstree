@@ -129,7 +129,7 @@ def make_node_and_update(root: int, nextID: int, path: str, stack: Tuple[chess.M
             index += 1
 
     if "w" in moveresults:
-        result = "w"
+        result = "l"
     elif "d" in moveresults:
         result = "d"
         if len(reasons) == 1:
@@ -137,7 +137,7 @@ def make_node_and_update(root: int, nextID: int, path: str, stack: Tuple[chess.M
         else:
             reason = "dead position"
     elif "l" in moveresults:
-        result = "l"
+        result = "w"
     elif not moveresults:
         if board.is_checkmate():
             result = "l"
@@ -229,7 +229,7 @@ def store_cache():
 
 def main():
     load_cache()
-    for _ in range(1477):
+    for _ in range(14077):
         make_next_node()
     store_cache()
 

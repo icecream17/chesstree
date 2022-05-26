@@ -43,9 +43,9 @@ FEN
 ```js
 // Information about theoretically perfect play:
 ? // Unknown
-= // Draw
-> // side to move wins
-< // side to move loses
+d // Draw
+w // side to move wins
+l // side to move loses
 ```
 
 ### `/draw reason`

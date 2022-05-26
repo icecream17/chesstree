@@ -17,8 +17,7 @@ def filename(pathToNode):
 
 
 def is_tablebase(char):
-    return char in ("?", "=", "<", ">")
-
+    return char in ("?", "w", "d", "l")
 
 # tablebase
 def check_first(filename, line):
@@ -45,6 +44,10 @@ def check_fourth(folder, filename, line):
 
     start = str(next_node)
     assert line.startswith(start), f"4th@{filename} was {line}, expected to start with {start}"
+
+    # Actually the last_child + 1
+    # Default if line == start
+    last_child = next_node + 1
 
     if line != start:
         start = start + ".."
