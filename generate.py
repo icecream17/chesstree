@@ -97,7 +97,7 @@ def make_node_and_update(root: int, nextID: int, path: str, stack: Tuple[chess.M
         # Since this is regular chess,
         # no need to check for is_variant_win() is_variant_draw() etc
         if board.is_checkmate():
-            moveresults += "w"
+            moveresults += "l"
         elif board.is_fifty_moves():
             moveresults += "d"
             reasons.add("fifty moves")

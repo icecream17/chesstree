@@ -3,19 +3,21 @@
 // So although Perft results for depth 3 get 8902, the number here is smaller
 // There is more potential with symmetry...
 
-Total nodes: 206692???
+Total nodes: 206692
 Total parents: 14077
 Total solved: 0
 
 // Note: Some nodes are known to exist (by their parent)
 // but not known to be solved since there isn't a file for it yet.
 
-// In order to be solved, the node's children must be calculated
+// In order to be solved, the node's children must be calculated.
+// Known but uncomputer verified values are in parens
 
-Depth   Nodes               Solves             Range
-0       1                   0                  0
-1       20                  0                  1..20
-2       400                 0                  21..420
-3       5462                0                  421..5882
-4       74771               0 (known: 4)       5883..81549???
-5
+Depth   Nodes       Range                       Solves      Solved/Total
+0       1           0                           0           0
+1       20          1..20                       0           0
+2       400         21..420                     0           0
+3       5462        421..5882                   0           0
+4       74771       5883..81549                 4           5.34967e-05
+
+5       125142+     81550..206691+              4+ (120+)   3.19637e-05?
