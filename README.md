@@ -33,7 +33,7 @@ And the grammar is:
 /draw reason
 #Id
 /range
-zero or more /tablebase not separated by newlines
+one /tablebase for each move, not separated by newlines
 zero or more /equivalent separated by newlines
 FEN
 ```
