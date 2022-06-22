@@ -13,11 +13,11 @@ Total solved: 0
 // In order to be solved, the node's children must be calculated.
 // Known but uncomputer verified values are in parens
 
-Depth   Nodes       Range                       Solves      Solved/Total
-0       1           0                           0           0
-1       20          1..20                       0           0
-2       400         21..420                     0           0
-3       5462        421..5882                   0           0
-4       74771       5883..81549                 4           5.34967e-05
+Depth   Nodes       Range                       Solves/Solved       Solved/Total
+0       1           0                           0                   0
+1       20          1..20                       0                   0
+2       400         21..420                     0                   0
+3       6660        421..7080                   0                   0
+4       98521       7081..105601                4                   3.78784e-05
 
-5       125142+     81550..206691+              4+ (120+)   3.19637e-05?
+5       171845+     81550..277446+              4+ / 8+ (120+)      3.19637e-05?
