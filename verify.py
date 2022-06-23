@@ -140,7 +140,7 @@ def check_cache():
     import pickle
     try:
         with open('cache.pickle', 'rb') as f:
-            currentlayer, nextlayer, nextID, boardata = pickle.load(f)
+            version, currentlayer, nextlayer, nextID, boardata = pickle.load(f)
             assert nextID == next_node
         print("cache OK")
     except FileNotFoundError:
